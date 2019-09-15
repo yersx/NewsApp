@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardElevation="5dp"
+    app:cardCornerRadius="10dp">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <ImageView
+                    android:id="@+id/image"
+                    android:transitionName="image"
+                    android:layout_width="match_parent"
+                    android:layout_height="185dp"
+                    android:scaleType="centerCrop"
+            />
+            <ImageView
+                    android:id="@+id/bottomtext"
+                    android:src="@drawable/bottombg"
+                    android:layout_width="match_parent"
+                    android:layout_height="76dp"
+                    android:layout_alignBottom="@+id/image"/>
+
+            <ProgressBar
+                    android:id="@+id/progressLoaded"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="80dp"/>
+
+            <TextView
+                    android:id="@+id/publishedDate"
+                    android:layout_width="match_parent"
+                    android:drawablePadding="10dp"
+                    android:layout_height="30dp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginRight="140dp"
+                    android:text="1 March 2019"
+                    android:gravity="bottom"
+                    android:layout_alignLeft="@+id/title"
+                    android:layout_alignStart="@+id/title"
+                    android:layout_alignRight="@+id/source"
+                    android:layout_alignTop="@+id/source"
+                    android:layout_alignEnd="@+id/source"
+            />
+
+            <TextView
+                    android:id="@+id/source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:layout_below="@+id/image"
+                    android:padding="10dp"
+                    android:maxLines="1"
+                    android:text="Source"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="-55dp">
+
+            </TextView>
+
+            <TextView
+                    android:id="@+id/title"
+                    android:textSize="18sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:maxLines="3"
+                    android:text="Title"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/image"
+            />
+
+            <TextView
+                    android:id="@+id/desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:maxLines="3"
+                    android:layout_marginRight="@dimen/carddesc"
+                    android:layout_marginLeft="@dimen/carddesc"
+                    android:layout_marginBottom="@dimen/carddesc"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/title"
+
+            />
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+</FrameLayout>
