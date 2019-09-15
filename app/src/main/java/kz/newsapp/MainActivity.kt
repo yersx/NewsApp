@@ -21,7 +21,7 @@ import java.util.ArrayList
 
 const val API_TOKEN = "a70582ac9ece41ec8bd0d91afdf8654f"
 
-class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, Adapter.OnItemClickListener {
 
     private var articles: List<Article> = ArrayList()
     private lateinit var recyclerView: RecyclerView
@@ -47,10 +47,10 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     private fun getApi(){
 
 
-        swipeRefresh.isRefreshing = true;
+        swipeRefresh.isRefreshing = true
 
-        var newsApi = NewsService.getRetrofit().create(NewsApi::class.java)
-        var call: Call<News> = newsApi.getNews("us",API_TOKEN)
+        val newsApi = NewsService.getRetrofit().create(NewsApi::class.java)
+        val call: Call<News> = newsApi.getNews("us",API_TOKEN)
         call.enqueue(object : Callback<News>{
             override fun onFailure(call: Call<News>, t: Throwable) {
                Toast.makeText(this@MainActivity, "Error reading Json", Toast.LENGTH_LONG).show()
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
                 if(response.isSuccessful){
 
                     articles = response.body()!!.articles
-                    adapter = Adapter(articles, this@MainActivity)
+                    adapter = Adapter(articles, this@MainActivity,this@MainActivity)
                     recyclerView.adapter = adapter
                     adapter.notifyDataSetChanged()
                     swipeRefresh.isRefreshing = false
@@ -74,28 +74,32 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         })
     }
 
-    private fun initListener(){
-        adapter.setOnItemClickListener(object: Adapter.OnItemClickListener {
-            override fun onItemClickListener(view: View?, position: Int) {
-                val i = Intent(this@MainActivity, DetailActivity::class.java)
-                val article : Article = articles[position]
-                i.putExtra("url",article.url)
-                i.putExtra("title",article.title)
-                i.putExtra("date",article.publishedAt)
-                i.putExtra("author",article.author)
-                i.putExtra("source",article.source.name)
-                i.putExtra("description", article.description)
-                i.putExtra("content", article.content)
-                i.putExtra("image",article.urlToImage)
-
-                startActivity(i)
-            }
-
-        })
-    }
-
     override fun onRefresh() {
         getApi()
+    }
+
+
+    override fun onItemClick(position: Int) {
+        articles.get(position)
+        val i = Intent(this@MainActivity, DetailActivity::class.java)
+        val article : Article = articles[position]
+
+        if(article.author.isNullOrEmpty()){
+            article.author = "Unknown"
+        }
+        if(article.content.isNullOrEmpty()){
+            article.content = "Not exist"
+        }
+        i.putExtra("url",article.url)
+        i.putExtra("title",article.title)
+        i.putExtra("date",article.publishedAt)
+        i.putExtra("author",article.author)
+        i.putExtra("source",article.source.name)
+        i.putExtra("description", article.description)
+        i.putExtra("content", article.content)
+        i.putExtra("image",article.urlToImage)
+
+        startActivity(i)
     }
 
     private fun onLoading(){

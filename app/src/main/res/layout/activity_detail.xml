@@ -107,23 +107,27 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:gravity="center">
+
                     <TextView
                             android:id="@+id/source"
                             android:text="source"
                             android:textColor="@color/colorPrimary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"/>
-                    <WebView
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="15dp"/>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                    <kz.newsapp.ObservableWebView
                             app:layout_behavior="@string/appbar_scrolling_view_behavior"
                             android:id="@+id/webView"
+                            android:scrollbarSize="10dp"
+                            android:scrollbars="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="500dp"/>
                 </LinearLayout>
 
 

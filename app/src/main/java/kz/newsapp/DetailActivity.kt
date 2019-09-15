@@ -2,6 +2,7 @@ package kz.newsapp
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
@@ -32,7 +33,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-        supportActionBar!!.hide()
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         mTitle = findViewById(R.id.title)
@@ -59,12 +60,8 @@ class DetailActivity : AppCompatActivity() {
         mDescription.setText(description)
         mDate.setText(date)
 
-        if(author.isNullOrEmpty()){
-            author = "Unknown"
-        }
-        if(content.isNullOrEmpty()){
-            author = "Not exist"
-        }
+        mAuthor.setText(author)
+        mContent.setText(content)
         showWeb(url)
     }
 
@@ -76,7 +73,6 @@ class DetailActivity : AppCompatActivity() {
         webView.settings.builtInZoomControls = true
         webView.settings.displayZoomControls = true
         webView.webViewClient=  WebViewClient()
-
 
         webView.loadUrl(url)
     }
