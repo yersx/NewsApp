@@ -24,8 +24,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-private const val API_TOKEN = "a70582ac9ece41ec8bd0d91afdf8654f"
-val PAGE_SIZE = 10
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, Adapter.OnItemClickListener {
 
     private var articles: List<Article> = ArrayList()
@@ -48,7 +46,8 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-        onLoading()
+        getApi()
+
 
     }
 
@@ -100,16 +99,6 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, 
         startActivity(i)
     }
 
-    private fun onLoading(){
-        swipeRefresh.post(
-            object : Runnable {
-                override fun run() {
-                    getApi()
-                }
-
-            }
-        )
-    }
 
     private fun performPagination(){
 

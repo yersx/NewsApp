@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PageKeyedDataSource;
 import android.arch.paging.PagedList;
-import android.content.ClipData;
 import kz.newsapp.ItemDataSourceFactory;
 import kz.newsapp.date.ItemDataSource;
 
