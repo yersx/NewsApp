@@ -63,13 +63,12 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, 
         itemViewModel.itemPagedList.observe(this, object : Observer<PagedList<Article>>{
             override fun onChanged(t: PagedList<Article>?) {
                 adapter.submitList(t)
-
-                adapter.notifyDataSetChanged()
             }
 
         })
-        recyclerView.adapter = adapter
 
+        swipeRefresh.isRefreshing = false
+        recyclerView.adapter = adapter
            }
 
     override fun onRefresh() {
