@@ -19,6 +19,8 @@ public class News {
     @Expose
     private List<Article> articles;
 
+    public boolean has_more;
+
     public String getStatus() {
         return status;
     }

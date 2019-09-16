@@ -100,8 +100,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.NewsViewHolder> {
 
         }
 
-        public void addArticles(List<Article> articles){
-            for(Article a: articles){
+        public void addArticles(List<Article> article){
+            for(Article a: article){
                 articles.add(a);
             }
         }

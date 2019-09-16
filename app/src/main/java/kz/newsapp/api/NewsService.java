@@ -6,11 +6,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NewsService {
 
     public static final String ENDPOINT = "https://newsapi.org/v2/";
+    public static NewsService mInstance;
+    private Retrofit retrofit;
 
-    public static Retrofit getRetrofit() {
-        return new Retrofit.Builder()
+    private  NewsService() {
+        retrofit = new Retrofit.Builder()
                 .baseUrl(ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+    }
+
+    public static synchronized NewsService getInstance(){
+        if(mInstance == null){
+            mInstance = new NewsService();
+
+        }
+        return mInstance;
+    }
+
+    public NewsApi getApi(){
+        return retrofit.create(NewsApi.class);
     }
 }

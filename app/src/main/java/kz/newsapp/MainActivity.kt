@@ -1,6 +1,10 @@
 package kz.newsapp
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
+import android.arch.paging.PagedList
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,20 +17,23 @@ import android.widget.Toast
 import kz.newsapp.api.NewsApi
 import kz.newsapp.api.NewsService
 import kz.newsapp.model.Article
+import kz.newsapp.model.ItemViewModel
 import kz.newsapp.model.News
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-const val API_TOKEN = "a70582ac9ece41ec8bd0d91afdf8654f"
-
+private const val API_TOKEN = "a70582ac9ece41ec8bd0d91afdf8654f"
+val PAGE_SIZE = 10
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, Adapter.OnItemClickListener {
 
     private var articles: List<Article> = ArrayList()
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var adapter: Adapter
+
+
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +46,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, 
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setHasFixedSize(true)
 
         onLoading()
 
@@ -49,30 +57,20 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, 
 
         swipeRefresh.isRefreshing = true
 
-        val newsApi = NewsService.getRetrofit().create(NewsApi::class.java)
-        val call: Call<News> = newsApi.getNews("us",API_TOKEN)
-        call.enqueue(object : Callback<News>{
-            override fun onFailure(call: Call<News>, t: Throwable) {
-               Toast.makeText(this@MainActivity, "Error reading Json", Toast.LENGTH_LONG).show()
+        var itemViewModel: ItemViewModel= ViewModelProviders.of(this).get(ItemViewModel::class.java)
+        var adapter = ItemAdapter(this)
+
+        itemViewModel.itemPagedList.observe(this, object : Observer<PagedList<Article>>{
+            override fun onChanged(t: PagedList<Article>?) {
+                adapter.submitList(t)
+
+                adapter.notifyDataSetChanged()
             }
 
-            override fun onResponse(call: Call<News>, response: Response<News>) {
-                if(response.isSuccessful){
-
-                    articles = response.body()!!.articles
-                    adapter = Adapter(articles, this@MainActivity,this@MainActivity)
-                    recyclerView.adapter = adapter
-                    adapter.notifyDataSetChanged()
-                    swipeRefresh.isRefreshing = false
-
-                } else {
-                    Toast.makeText(this@MainActivity, "No result", Toast.LENGTH_SHORT).show()
-                    swipeRefresh.isRefreshing = false
-                }
-                  }
-
         })
-    }
+        recyclerView.adapter = adapter
+
+           }
 
     override fun onRefresh() {
         getApi()
@@ -111,5 +109,9 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, 
 
             }
         )
+    }
+
+    private fun performPagination(){
+
     }
 }

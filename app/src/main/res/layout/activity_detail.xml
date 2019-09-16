@@ -121,7 +121,7 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:gravity="center">
-                    <kz.newsapp.ObservableWebView
+                    <WebView
                             app:layout_behavior="@string/appbar_scrolling_view_behavior"
                             android:id="@+id/webView"
                             android:scrollbarSize="10dp"
