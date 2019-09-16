@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, 
         itemViewModel.itemPagedList.observe(this, object : Observer<PagedList<Article>>{
             override fun onChanged(t: PagedList<Article>?) {
                 adapter.submitList(t)
+                adapter
             }
 
         })

@@ -9,7 +9,7 @@ public interface NewsApi {
 
     @GET("top-headlines")
     Call<News> getNews(@Query("country") String country,
-                       @Query("pageSize") Integer pageSize,
-                       @Query("page") Integer page,
+                       @Query("pageSize") int pageSize,
+                       @Query("page") int page,
                        @Query("apiKey") String apiKey);
 }
