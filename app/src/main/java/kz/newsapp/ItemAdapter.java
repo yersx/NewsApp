@@ -96,4 +96,8 @@ public class ItemAdapter extends PagedListAdapter<Article, ItemAdapter.ItemViewH
             mProgressBar = itemView.findViewById(R.id.progressLoaded);
         }
     }
+
+    public interface  OnItemClickListener {
+        void onItemClick();
+    }
 }
