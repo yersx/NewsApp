@@ -24,12 +24,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, Adapter.OnItemClickListener {
+class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private var articles: List<Article> = ArrayList()
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
-    private lateinit var adapter: Adapter
     private lateinit var itemViewModel: ItemViewModel
 
 
@@ -74,28 +73,6 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, 
     }
 
 
-    override fun onItemClick(position: Int) {
-        articles.get(position)
-        val i = Intent(this@MainActivity, DetailActivity::class.java)
-        val article : Article = articles[position]
-
-        if(article.author.isNullOrEmpty()){
-            article.author = "Unknown"
-        }
-        if(article.content.isNullOrEmpty()){
-            article.content = "Not exist"
-        }
-        i.putExtra("url",article.url)
-        i.putExtra("title",article.title)
-        i.putExtra("date",article.publishedAt)
-        i.putExtra("author",article.author)
-        i.putExtra("source",article.source.name)
-        i.putExtra("description", article.description)
-        i.putExtra("content", article.content)
-        i.putExtra("image",article.urlToImage)
-
-        startActivity(i)
-    }
 
 
     private fun performPagination(){
