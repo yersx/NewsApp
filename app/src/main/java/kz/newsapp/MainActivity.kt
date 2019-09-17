@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, 
     private var articles: List<Article> = ArrayList()
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
-    private lateinit var adapter: Adapter
     private lateinit var itemViewModel: ItemViewModel
 
 
