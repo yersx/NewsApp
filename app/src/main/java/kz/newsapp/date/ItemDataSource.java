@@ -2,6 +2,7 @@ package kz.newsapp.date;
 
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import kz.newsapp.api.NewsService;
 import kz.newsapp.model.Article;
 import kz.newsapp.model.News;
@@ -19,11 +20,13 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, Article> {
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Article> callback) {
         NewsService.getInstance().getApi()
-                .getNews("us", PAGE_SIZE, 1, API_TOKEN)
+                .getNews("us", PAGE_SIZE, FIRST_PAGE, API_TOKEN)
                 .enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
-                callback.onResult(response.body().getArticles(), null, FIRST_PAGE+1);
+                if (response.body() != null) {
+                    callback.onResult(response.body().getArticles(), null, FIRST_PAGE + 1);
+                }
             }
 
             @Override
@@ -44,6 +47,8 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, Article> {
                         if(response.body() != null){
                             Integer key = (params.key >1) ? params.key - 1 : null;
                             callback.onResult(response.body().getArticles(), key);
+
+                            Log.i("Tag", "go up");
                         }
                     }
 
@@ -66,6 +71,7 @@ public class ItemDataSource extends PageKeyedDataSource<Integer, Article> {
                         if(response.body() != null){
                             Integer key = response.body().has_more ? params.key + 1 : null;
                             callback.onResult(response.body().getArticles(), key);
+                            Log.i("Tag", "go down");
                         }
                     }
 

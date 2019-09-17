@@ -2,7 +2,9 @@ package kz.newsapp;
 
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.recyclerview.extensions.AsyncDifferConfig;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -24,7 +27,8 @@ import kz.newsapp.model.Article;
 public class ItemAdapter extends PagedListAdapter<Article, ItemAdapter.ItemViewHolder> {
 
     private Context mCtx;
-
+    private OnItemClickListener listener;
+    private Article item;
     protected ItemAdapter(Context mCtx) {
         super(DIFF_CALLBACK);
         this.mCtx = mCtx;
@@ -39,7 +43,7 @@ public class ItemAdapter extends PagedListAdapter<Article, ItemAdapter.ItemViewH
 
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder, int i) {
-        Article item = getItem(i);
+         item = getItem(i);
         if(item != null){
             Glide.with(mCtx)
                     .load(item.getUrlToImage())
@@ -84,7 +88,6 @@ public class ItemAdapter extends PagedListAdapter<Article, ItemAdapter.ItemViewH
         TextView mTitle,mDesc, mSource, mDate;
         ImageView mImage;
         ProgressBar mProgressBar;
-        Adapter.OnItemClickListener onItemClickListener;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,10 +97,32 @@ public class ItemAdapter extends PagedListAdapter<Article, ItemAdapter.ItemViewH
             mImage = itemView.findViewById(R.id.image);
             mSource = itemView.findViewById(R.id.source);
             mProgressBar = itemView.findViewById(R.id.progressLoaded);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    Toast.makeText(mCtx,"Clicked",Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(mCtx, DetailActivity.class);
+                    i.putExtra("author", item.getAuthor());
+                    i.putExtra("content",item.getContent());
+                    i.putExtra("description",item.getDescription());
+                    i.putExtra("date",item.getPublishedAt());
+                    i.putExtra("url",item.getUrl());
+                    i.putExtra("title", item.getTitle());
+                    i.putExtra("image", item.getUrlToImage());
+                    i.putExtra("source",item.getSource().getName());
+                    mCtx.startActivity(i);
+                }
+            });
         }
     }
 
     public interface  OnItemClickListener {
-        void onItemClick();
+        void onItemClick(Article article);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 }
