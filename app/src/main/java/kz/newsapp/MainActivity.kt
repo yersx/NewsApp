@@ -29,8 +29,13 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     private var articles: List<Article> = ArrayList()
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
-    private lateinit var itemViewModel: ItemViewModel
+    private val itemViewModel by lazy {
+        ViewModelProviders.of(this).get(ItemViewModel::class.java)
+    }
 
+    private val adapter by lazy {
+        ItemAdapter(this)
+    }
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,38 +49,28 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = adapter
 
-         itemViewModel= ViewModelProviders.of(this).get(ItemViewModel::class.java)
-        getApi()
+        configureObserver()
 
 
     }
 
-    private fun getApi(){
-
-        var adapter = ItemAdapter(this)
-
+    private fun configureObserver(){
         swipeRefresh.isRefreshing = true
 
         itemViewModel.itemPagedList.observe(this, object : Observer<PagedList<Article>>{
             override fun onChanged(t: PagedList<Article>?) {
                 adapter.submitList(t)
             }
-
         })
-        recyclerView.adapter = adapter
         swipeRefresh.isRefreshing = false
 
     }
 
     override fun onRefresh() {
-        getApi()
+        configureObserver()
     }
 
 
-
-
-    private fun performPagination(){
-
-    }
 }
